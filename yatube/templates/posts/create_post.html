@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if is_edit %}
+        Редактировать пост
+    {% else %}
+        Новый пост
+    {% endif %}
+{% endblock %}
+{% block context %}
+
+<form action="
+{% if is_edit %}
+    {% url 'posts:post_edit' post_id %}
+{% else %}
+    {% url 'posts:post_create' %}
+{% endif %}
+    " method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{% for field in form  %}
+    <p>
+    {{ field.name }}
+    {{ field }}
+    </p>
+{% endfor %}
+<button type="submit" class="btn btn-primary">
+    {% if is_edit %}
+      Сохранить изменения
+    {% else %}
+      Добавить
+    {% endif %}               
+  </button> 
+  
+</form>
+
+{% endblock %}

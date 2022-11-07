@@ -1,0 +1,85 @@
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
+from test_views import generate_test_posts
+
+from ..models import Group, Post
+
+User = get_user_model()
+
+class ViewTests(TestCase):
+    #сгенерировать тестовые посты
+    #создать тестовый пост с картинкой
+
+    
+    
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user_author = User.objects.create_user(username='Author')
+        cls.user_commentator = User.objects.create_user(username='Commentator')
+        
+        
+    
+    def setUp(self):
+        super().setUp()
+        self.guest_client = Client()
+        
+        self.author_client = Client()
+        self.author_client.force_login(self.user_author)
+        
+        self.commentator_client = Client()
+        self.commentator_client.force_login(self.commentator_client)
+        
+        
+    
+    def test_sorl-thumbnail_index(self):
+        """Пост с картинкой передаётся в словаре context (index)"""
+        pass
+
+    def test_sorl-thumbnail_profile(self):
+        """Пост с картинкой передаётся в словаре context (profile)"""
+        pass
+
+    def test_sorl-thumbnail_group(self):
+        """Пост с картинкой передаётся в словаре context (group_list)"""
+        pass
+    
+    def test_sorl-thumbnail_post_detail(self):
+        """Пост с картинкой передаётся в словаре context (post_detail)"""
+        pass
+    
+    def test_sorl-thumbnail_post_detail(self):
+        """Отправка формы PostForm создаётся запись в базе данных"""
+        pass
+
+    def test_comment_new(self):
+        """На странице поста под текстом записи выводится
+            форма для отправки комментария, а ниже — список комментариев.
+            Комментировать могут только авторизованные пользователи."""
+        pass
+
+
+    """ Написан тест для проверки кеширования главной страницы.
+    Логика теста: при удалении записи из базы, она остаётся в response.content
+    главной страницы до тех пор, пока кэш не будет очищен принудительно. """
+    def test_cache_page(self):
+        """Список постов на главной странице сайта хранится в кэше и обновляется раз в 20 секунд."""
+        pass
+
+    def test_404(self):
+        """Напишите тест, проверяющий, что страница 404 отдаёт кастомный шаблон.
+        Подсказки можно найти в уроке Кастомные страницы ошибок"""
+        pass
+    
+    def test_1(self):
+        """
+        Авторизованный пользователь может подписываться на других пользователей и удалять их из подписок.
+        """
+        pass
+
+    def test_2(self):
+        """
+        Новая запись пользователя появляется в ленте тех, кто на него подписан и не появляется в ленте тех, кто не подписан.
+        """
+        pass
