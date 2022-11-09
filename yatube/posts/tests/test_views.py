@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -7,6 +8,7 @@ from ..models import Group, Post
 User = get_user_model()
 
 COUNT_POST_IN_PAGE = 10
+
 
 def generate_test_posts(count: int, author: User, group: Group):
     postlist = []
@@ -19,9 +21,8 @@ def generate_test_posts(count: int, author: User, group: Group):
         postlist.append(post)
     Post.objects.bulk_create(postlist)
 
+
 class ViewTests(TestCase):
-
-
 
     @classmethod
     def setUpClass(cls):
@@ -88,6 +89,7 @@ class ViewTests(TestCase):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(self.testuser)
+        cache.clear()
 
     def test_templates_view_auth(self):
         """(авторизован)Во view-функциях используются правильные шаблоны."""
@@ -141,17 +143,17 @@ class ViewTests(TestCase):
         response = self.guest_client.get(reverse('posts:index'))
         self.assertEqual(
             len(response.context['page_obj']),
-            self.COUNT_POST_IN_PAGE
+            COUNT_POST_IN_PAGE
         )
 
     def test_paginator_last_page(self):
         url_last_page = '?page=' + str(
-            Post.objects.all().count() // self.COUNT_POST_IN_PAGE + 1
+            Post.objects.all().count() // COUNT_POST_IN_PAGE + 1
         )
         response = self.guest_client.get(
             reverse('posts:index') + url_last_page
         )
         self.assertEqual(
             len(response.context['page_obj']),
-            Post.objects.all().count() % self.COUNT_POST_IN_PAGE
+            Post.objects.all().count() % COUNT_POST_IN_PAGE
         )

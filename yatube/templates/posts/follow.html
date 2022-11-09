@@ -12,7 +12,7 @@
     <article>
     <ul>
         <li>
-            Автор: {{ post.author.get_full_name }}
+            Автор: {{ post.author }}
         </li>
         <li>
             Дата публикации: {{ post.pub_date | date:"d E Y" }}
@@ -24,6 +24,9 @@
             <img class="card-img my-2" src="{{ im.url }}">
         {% endthumbnail %}
         {{ post.text | linebreaksbr }}
+    </p>
+    <p>
+        <a href="{% url 'posts:post_detail' post.id %}">Детали</a>
     </p>
     {% if post.group.slug %}
         <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>

@@ -5,6 +5,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..models import Group, Post
+from django.core.cache import cache
 
 User = get_user_model()
 
@@ -43,6 +44,7 @@ class UrlAndTemplateTests(TestCase):
         self.authorized_client2 = Client()
         self.authorized_client2.force_login(self.testuser2)
         self.guest_client = Client()
+        cache.clear()
 
     def test_HTTPStatus_and_Template_URL_public(self):
         """Проверяем доступность и соответствие шаблонов к URL """

@@ -26,26 +26,18 @@ def group_posts(request, slug):
     }
     return render(request, 'posts/group_list.html', context=context)
 
-
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     page_obj = paginate_page(request, author.posts.all())
-    print (Follow.objects.filter(
-        user=request.user, author=User.objects.get(username=username)
-    ).count())
-    if Follow.objects.filter(
-        user=request.user, author=User.objects.get(username=username)
-    ).count() > 0:
-        following = True
-    else:
-        following = False
-    print (following)
+    following = True
+    if request.user.is_authenticated:
+        if Follow.objects.filter(user=request.user, author=author).exists():
+            following = False
     context = {
-        'following': following,
-        'author': author,
-        'page_obj': page_obj,
-    }
-    print (context)
+            'following': following,
+            'author': author,
+            'page_obj': page_obj,
+        }
     return render(request, 'posts/profile.html', context)
 
 
@@ -127,9 +119,16 @@ def follow_index(request):
 
 @login_required
 def profile_follow(request, username):
+    if request.user.username == username:
+        return redirect ('posts:index')
+    if Follow.objects.filter(
+    author=User.objects.get(username=username),
+    user=request.user,
+    ).exists():
+        return redirect ('posts:index')
     Follow.objects.create(
-        author=User.objects.get(username=username),
-        user=request.user,
+    author=User.objects.get(username=username),
+    user=request.user,
     )
     return redirect('posts:follow_index')
 
