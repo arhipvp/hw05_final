@@ -31,7 +31,7 @@ class PostModelTest(TestCase):
         )
         self.assertEqual(
             str(self.test_post),
-            self.test_post_data['text'][:self.POST_LEN_FOR_STR]
+            self.test_post.text[:self.POST_LEN_FOR_STR]
         )
 
     def test_models_have_correct_verbose_name_and_helptext(self):

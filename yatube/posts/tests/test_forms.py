@@ -12,12 +12,12 @@ class FormTests(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        User.objects.create_user(username="TestUser")
+        cls.testuser = User.objects.create_user(username="TestUser")
 
     def setUp(self) -> None:
         self.authorized_client = Client()
         self.authorized_client.force_login(
-            User.objects.get(username='TestUser')
+            self.testuser
         )
         self.test_data = {
             'text': 'Тестовый тектс',
@@ -46,7 +46,7 @@ class FormTests(TestCase):
         }
         newpost = Post.objects.create(
             text=test_data['text'],
-            author=User.objects.get(username='TestUser')
+            author=self.testuser
         )
         self.authorized_client.post(
             reverse('posts:post_edit', kwargs={'post_id': newpost.id}),
