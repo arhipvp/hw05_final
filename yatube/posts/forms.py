@@ -15,6 +15,7 @@ class PostForm(forms.ModelForm):
             'group': forms.ChoiceField(required=False, )
         }
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

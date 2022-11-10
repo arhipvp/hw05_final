@@ -32,18 +32,20 @@ class GroupAdmin(admin.ModelAdmin):
         'description',
     )
 
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display: (
+    list_display = (
         'pk',
         'text',
         'author',
         'created'
     )
-    
+
+
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display: (
+    list_display = (
         'pk',
         'author',
         'user',
