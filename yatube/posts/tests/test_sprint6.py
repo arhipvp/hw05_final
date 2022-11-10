@@ -98,7 +98,7 @@ class ViewTests(TestCase):
             )
         )
         self.assertIn(
-            self.uploaded.name, response.context['page_obj'][0].image.name
+            self.uploaded.name, response.context['post'].image.name
         )
 
     def test_sorl_thumbnail_PostForm(self):
