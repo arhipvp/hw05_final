@@ -123,7 +123,7 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     if request.user.username == username or Follow.objects.filter(
-            author__username=request.user,
+            author__username=username,
             user=request.user).exists():
         return redirect('posts:index')
 
